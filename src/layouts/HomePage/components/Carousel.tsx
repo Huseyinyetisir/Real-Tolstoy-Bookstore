@@ -1,7 +1,6 @@
 import { ReturnBook } from "./ReturnBook";
 import { useEffect, useState } from "react";
 import BookModel from "../../../models/BookModel"
-import { error } from "console";
 
 export const Carousel = () => {
 
@@ -28,7 +27,7 @@ export const Carousel = () => {
 
         const loadedBooks: BookModel[] = []; 
 
-        for (const key in loadedBooks){
+        for (const key in responseData){
             loadedBooks.push({
               id: responseData[key].id,
               title: responseData[key].title,
@@ -51,13 +50,13 @@ export const Carousel = () => {
     })
   },[]);
 
-  /*if (isLoading){
+  if (isLoading){
     return (
           <div className="container m-5">
            <p>Loading..</p>
           </div>
     );
-  }*/
+  }
   if (httpError){
     return (
           <div className="container m-5">
@@ -68,64 +67,61 @@ export const Carousel = () => {
 
 
     return (
-      <div className="container mt-5" style={{ height: 550 }}>
-        <div className="homepage-carousel-title">
-          <h3>Find your next "I stayed up too late reading" book.</h3>
-        </div>
-        <div id="carouselExampleControls" className="carousel carousel-dark slide mt-5" data-bs-interval="false">
-          {/* Desktop */}
-          <div className="carousel-inner">
-          <div className="carousel-item active">
-              <div className="row d-flex justify-content-center align-items-center">
-                {
-                  books.slice(0.3).map(book => (
-                    <ReturnBook book={book} key={book.id}/> 
-                  ))
-                }
-              </div>
+       <div className='container mt-5' style={{ height: 550 }}>
+            <div className='homepage-carousel-title'>
+                <h3>Find your next "I stayed up too late reading" book.</h3>
             </div>
-          <div className="carousel-item">
-              <div className="row d-flex justify-content-center align-items-center">
-              {
-                  books.slice(3.6).map(book => (
-                    <ReturnBook book={book} key={book.id}/> 
-                  ))
-                }
+            <div id='carouselExampleControls' className='carousel carousel-dark slide mt-5 
+                d-none d-lg-block' data-bs-interval='false'>
+
+                {/* Desktop */}
+                <div className='carousel-inner'>
+                    <div className='carousel-item active'>
+                        <div className='row d-flex justify-content-center align-items-center'>
+                            {books.slice(0, 3).map(book => (
+                                <ReturnBook book={book} key ={book.id} />
+                            ))}
+                        </div>
+                    </div>
+                    <div className='carousel-item'>
+                        <div className='row d-flex justify-content-center align-items-center'>
+                            {books.slice(3, 6).map(book => (
+                                <ReturnBook book={book} key ={book.id} />
+                            ))}
+                        </div>
+                    </div>
+                    <div className='carousel-item'>
+                        <div className='row d-flex justify-content-center align-items-center'>
+                            {books.slice(6, 9).map(book => (
+                                <ReturnBook book={book} key ={book.id} />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <button className='carousel-control-prev' type='button'
+                    data-bs-target='#carouselExampleControls' data-bs-slide='prev'>
+                    <span className='carousel-control-prev-icon' aria-hidden='true'></span>
+                    <span className='visually-hidden'>Previous</span>
+                </button>
+                <button className='carousel-control-next' type='button'
+                    data-bs-target='#carouselExampleControls' data-bs-slide='next'>
+                    <span className='carousel-control-next-icon' aria-hidden='true'></span>
+                    <span className='visually-hidden'>Next</span>
+                </button>
             </div>
+
+            {/* Mobile */}
+            <div className='d-lg-none mt-3'>
+                <div className='row d-flex justify-content-center align-items-center'>
+                    <ReturnBook book={books[7]} key={books[7].id}/>
+                </div>
             </div>
-            <div className="carousel-item">
-              <div className="row d-flex justify-content-center align-items-center">
-              {
-                  books.slice(6.9).map(book => (
-                    <ReturnBook book={book} key={book.id}/> 
-                  ))
-                }
-              </div>
-            </div>
-          </div>
-          <button className="carousel-control-prev" type="button" 
-                  data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button className="carousel-control-next" type="button" 
-                  data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
-          </button>
-        </div> 
-        {/* Mobile */}
-        <div className="d-lg-none mt-3">
-          <div className="row d-flex justify-content-center align-items-center">
-            <ReturnBook book={books[7]} key={books[7].id}/> 
-          </div>
-        </div>
-        <div className="homepage-carousel-title mt-3">
-          <a className="btn btn-outline-secondary btn-lg" href="#">
+            <div className='homepage-carousel-title mt-3'>
+            <a className="btn btn-outline-secondary btn-lg" href="#">
             View More
           </a>
+            </div>
         </div>
-      </div>
     );
   };
   
