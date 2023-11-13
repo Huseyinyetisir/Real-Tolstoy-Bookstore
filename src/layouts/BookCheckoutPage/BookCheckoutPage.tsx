@@ -3,6 +3,7 @@ import BookModel from "../../models/BookModel";
 import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { title } from "process";
 import { StarsReview } from "../Utils/StarsReview";
+import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 
 export const BookCheckoutPage = () => {
 
@@ -78,6 +79,7 @@ export const BookCheckoutPage = () => {
                             <StarsReview Rating={-1} Size={32} />
                         </div>
                     </div>
+                    <CheckoutAndReviewBox book={book} mobile={false}/>
                 </div>
             </div>
             <div className="container d-lg-none mt-5">
@@ -97,6 +99,8 @@ export const BookCheckoutPage = () => {
                         <StarsReview Rating={4} Size={32} />
                     </div>
                 </div>
+                <CheckoutAndReviewBox book={book} mobile={true}/>
+
             </div>
         </div>
     );
