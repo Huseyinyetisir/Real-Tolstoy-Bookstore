@@ -85,7 +85,7 @@ export const BookCheckoutPage = () => {
             }
 
             if (loadedReviews){
-                const round = (Math.round((weightedStarReviews / loadedReviews.length) * 2).toFixed(1));
+                const round = (Math.round((weightedStarReviews / loadedReviews.length) * 1).toFixed(1));
                 setTotalStars(Number(round));
             }
             setReviews(loadedReviews);
@@ -130,7 +130,7 @@ export const BookCheckoutPage = () => {
                             <h2>{book?.title}</h2>
                             <h5 className="text-primary">{book?.author}</h5>
                             <p className="lead">{book?.description}</p>
-                            <StarsReview Rating={-1} Size={32} />
+                            <StarsReview Rating={totalStars} Size={32} />
                         </div>
                     </div>
                     <CheckoutAndReviewBox book={book} mobile={false}/>
@@ -152,7 +152,7 @@ export const BookCheckoutPage = () => {
                         <h2>{book?.title}</h2>
                         <h5 className="text-primary">{book?.author}</h5>
                         <p className="lead">{book?.description}</p>
-                        <StarsReview Rating={4} Size={32} />
+                        <StarsReview Rating={totalStars} Size={32} />
                     </div>
                 </div>
                 <CheckoutAndReviewBox book={book} mobile={true}/>
