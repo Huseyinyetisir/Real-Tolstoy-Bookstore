@@ -111,32 +111,6 @@ export const BookCheckoutPage = () => {
     }, [isReviewLeft]);
 
     useEffect(() => {
-        const fetchUserReviewBook = async () => {
-            if (authState && authState.isAuthenticated) {
-                const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
-                const requestOptions = {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${authState.accessToken?.accessToken}`,
-                        'Content-Type': 'application/json'
-                    }
-                };
-                const userReview = await fetch(url, requestOptions);
-                if (!userReview.ok) {
-                    throw new Error('Something went wrong');
-                }
-                const userReviewResponseJson = await userReview.json();
-                setIsReviewLeft(userReviewResponseJson);
-            }
-            setIsLoadingUserReview(false);
-        }
-        fetchUserReviewBook().catch((error: any) => {
-            setIsLoadingUserReview(false);
-            setHttpError(error.message);
-        })
-    }, [authState]);
-
-    useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
             if (authState && authState.isAuthenticated) {
                 const url = `http://localhost:8080/api/books/secure/currentloans/count`;
@@ -190,7 +164,7 @@ export const BookCheckoutPage = () => {
         })
     }, [authState]);
 
-    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingBookCheckedOut || isLoadingUserReview) {
+    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingBookCheckedOut) {
         return (
             <SpinnerLoading />
         )
@@ -207,18 +181,25 @@ export const BookCheckoutPage = () => {
     async function checkoutBook() {
         const url = `http://localhost:8080/api/books/secure/checkout/?bookId=${book?.id}`;
         const requestOptions = {
-            method: 'PUT',
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
                 'Content-Type': 'application/json'
             }
         };
-        const checkoutResponse = await fetch(url, requestOptions);
-        if (!checkoutResponse.ok) {
-            throw new Error('Something went wrong!');
+    
+        try {
+            const checkoutResponse = await fetch(url, requestOptions);
+            if (!checkoutResponse.ok) {
+                const errorMessage = await checkoutResponse.text();
+                throw new Error(`Request failed with status ${checkoutResponse.status}: ${errorMessage}`);
+            }
+            setIsCheckedOut(true);
+        } catch (error) {
+            console.error('Error during checkout:', error);
         }
-        setIsCheckedOut(true);
     }
+    
 
     return (
         <div>
