@@ -6,9 +6,6 @@ export const LeaveAReview: React.FC<{}> = (props) => {
     const [starInput, setStarInput] = useState(0);
     const [hoverValue, setHoverValue] = useState(0)
 
-    const handleClick: any(value:number){
-        setStarInput(value);
-    }
 
     function starValue(value: number) {
         setStarInput(value);
