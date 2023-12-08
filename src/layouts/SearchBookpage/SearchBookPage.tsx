@@ -154,7 +154,7 @@ export const SearchBooksPage = () => {
                                         </a>
                                     </li>
                                     <li onClick={() => categoryField('BE')}>
-                                        <a className='dropdown-item' href='#'>
+                                        <a className='dropdown-item' href='foo'>
                                             Back End
                                         </a>
                                     </li>
