@@ -7,6 +7,7 @@ import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 import { LatestReviews } from "./LatestReviews";
 import { useOktaAuth } from "@okta/okta-react";
 import { error } from "console";
+import ReviewRequestModel from "../../models/ReviewRequestModel";
 
 export const BookCheckoutPage = () => {
 
@@ -235,6 +236,31 @@ export const BookCheckoutPage = () => {
         }
     }
     
+    async function submitReview(starInput: number, reviewDescription: String) {
+       
+        let bookId: number = 0;
+        if (book?.id){
+            bookId = book.id;
+        };
+        const reviewRequestModel = new ReviewRequestModel(starInput, bookId, reviewDescription);
+
+        const url = `http://localhost:8080/api/reviews/secure`;
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewRequestModel)
+        };
+        
+        const returnResponse = await fetch(url, requestOptions);
+        if (!returnResponse.ok) {
+            const errorMessage = await returnResponse.text();
+            throw new Error(`Request failed with status ${returnResponse.status}: ${errorMessage}`);
+        }
+        setIsReviewLeft(true);
+    }
 
     return (
         <div>
@@ -258,7 +284,7 @@ export const BookCheckoutPage = () => {
                     </div>
                     <CheckoutAndReviewBox book={book} mobile={false} currentLoansCount={currentLoansCount} 
                         isAuthenticated={authState?.isAuthenticated} isCheckedOut={isCheckedOut} isReviewLeft={isReviewLeft}
-                        checkoutBook={checkoutBook}/>
+                        checkoutBook={checkoutBook} submitReview={submitReview}/>
                 </div>
                 <hr />
                 <LatestReviews reviews={reviews} bookId={book?.id} mobile={false} />
@@ -282,7 +308,7 @@ export const BookCheckoutPage = () => {
                 </div>
                 <CheckoutAndReviewBox book={book} mobile={true} currentLoansCount={currentLoansCount} 
                     isAuthenticated={authState?.isAuthenticated} isCheckedOut={isCheckedOut} isReviewLeft={isReviewLeft}
-                    checkoutBook={checkoutBook}/>
+                    checkoutBook={checkoutBook} submitReview={submitReview}/>
                 <hr />
                 <LatestReviews reviews={reviews} bookId={book?.id} mobile={true} />
             </div>

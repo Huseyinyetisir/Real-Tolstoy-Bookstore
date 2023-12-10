@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
 
-const LeaveAReview: React.FC<{}> = (_props) => {
+const LeaveAReview: React.FC<{ submitReview: any }> = (props) => {
     const [selectedStar, setSelectedStar] = useState<number | null>(0);
     const [reviewDescription, setReviewDescription] = useState('');
 
@@ -40,7 +40,7 @@ const LeaveAReview: React.FC<{}> = (_props) => {
                         ></textarea>
                     </div>
                     <div>
-                        <button type="button" className="btn btn-primary mt-3">Submit Review</button>
+                        <button type="button" onClick= {() => props.submitReview(selectedStar, reviewDescription)} className="btn btn-primary mt-3">Submit Review</button>
                     </div>
 
                 </form>

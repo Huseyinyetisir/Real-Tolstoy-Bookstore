@@ -27,6 +27,7 @@ export const Review: React.FC<{review: ReviewModel}> = (props) => {
                         {props.review.reviewDescription}
                     </p>
                 </div>
+                <hr />
             </div>
 
         </div>
