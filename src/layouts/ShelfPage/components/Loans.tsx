@@ -3,29 +3,32 @@ import { useEffect, useState } from "react";
 import ShelfCurrentLoans from "../../../models/ShelfCurrentLoans";
 import { error } from "console";
 import { SpinnerLoading } from "../../Utils/SpinnerLoading";
+import { Link } from "react-router-dom";
+import { LoansModal } from "./LoansModal";
 
 export const Loans = () => {
-
+    
     const { authState } = useOktaAuth();
     const [httpError, setHttpError] = useState(null);
 
+    // Current Loans
     const [shelfCurrentLoans, setShelfCurrentLoans] = useState<ShelfCurrentLoans[]>([]);
     const [isLoadingUserLoans, setIsLoadingUserLoans] = useState(true);
+    const [checkout, setCheckout] = useState(false);
 
     useEffect(() => {
-        const fetchUserCurrentLoans = async () =>{
-            if (authState && authState.isAuthenticated){
-                const url = `http://localhost:8080/api/books/secure/currentloans`
+        const fetchUserCurrentLoans = async () => {
+            if (authState && authState.isAuthenticated) {
+                const url = `http://localhost:8080/api/books/secure/currentloans`;
                 const requestOptions = {
                     method: 'GET',
-                    headers: { 
+                    headers: {
                         Authorization: `Bearer ${authState.accessToken?.accessToken}`,
                         'Content-Type': 'application/json'
-                     }
-                }
+                    }
+                };
                 const shelfCurrentLoansResponse = await fetch(url, requestOptions);
-
-                if (!shelfCurrentLoansResponse.ok){
+                if (!shelfCurrentLoansResponse.ok) {
                     throw new Error('Something went wrong!');
                 }
                 const shelfCurrentLoansResponseJson = await shelfCurrentLoansResponse.json();
@@ -33,28 +36,60 @@ export const Loans = () => {
             }
             setIsLoadingUserLoans(false);
         }
-        fetchUserCurrentLoans().catch((error: any)=>{
+        fetchUserCurrentLoans().catch((error: any) => {
             setIsLoadingUserLoans(false);
             setHttpError(error.message);
         })
-        window.scrollTo(0,0);
-    },[authState]);
+        window.scrollTo(0, 0);
+    }, [authState, checkout]);
 
-
-    if (isLoadingUserLoans){
-        return(
-            <SpinnerLoading/>
-        )
-    }
-    
-    if (httpError){
+    if (isLoadingUserLoans) {
         return (
-            <div className="container m-5">
+            <SpinnerLoading/>
+        );
+    }
+
+    if (httpError) {
+        return (
+            <div className='container m-5'>
                 <p>
                     {httpError}
                 </p>
             </div>
-        )
+        );
+    }
+
+    async function returnBook(bookId: number) {
+        const url = `http://localhost:8080/api/books/secure/return/?bookId=${bookId}`;
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        const returnResponse = await fetch(url, requestOptions);
+        if (!returnResponse.ok) {
+            throw new Error('Something went wrong!');
+        }
+        setCheckout(!checkout);
+    }
+
+    async function renewLoan(bookId: number) {
+        const url = `http://localhost:8080/api/books/secure/renew/loan/?bookId=${bookId}`;
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+
+        const returnResponse = await fetch(url, requestOptions);
+        if (!returnResponse.ok) {
+            throw new Error('Something went wrong!');
+        }
+        setCheckout(!checkout);
     }
 
     return( <div>
