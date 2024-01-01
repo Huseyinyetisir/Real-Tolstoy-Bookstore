@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { PostNewMessage } from "./components/PostNewMessage";
 
 
 
@@ -16,7 +17,7 @@ export const MessagesPage = () => {
                             id="nav-send-message-tab" 
                             data-bs-toggle='tab' data-bs-target='#nav-send-message' type="button" role="tab" 
                             aria-controls="nav-send-message" aria-selected='true'>
-                            Submit A Question
+                            <PostNewMessage/>
                         </button>
                         <button onClick={() => setMessagesClick(true)} className="nav-link" 
                             id="nav-message-tab" data-bs-toggle='tab'
