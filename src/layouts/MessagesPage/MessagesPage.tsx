@@ -17,7 +17,7 @@ export const MessagesPage = () => {
                             id="nav-send-message-tab" 
                             data-bs-toggle='tab' data-bs-target='#nav-send-message' type="button" role="tab" 
                             aria-controls="nav-send-message" aria-selected='true'>
-                            <PostNewMessage/>
+                            Post New Message
                         </button>
                         <button onClick={() => setMessagesClick(true)} className="nav-link" 
                             id="nav-message-tab" data-bs-toggle='tab'
@@ -30,7 +30,7 @@ export const MessagesPage = () => {
                 <div className="tab-content" id="nav-tabContent">
                     <div className="tab-pane fade show active" id="nav-send-message" role="tabpanel"
                         aria-labelledby="nav-send-message-tab">
-                        <p>Post new message</p>
+                        <PostNewMessage/>
                     </div>
                     <div className="tab-pane fade" id="nav-message" role="tabpanel"
                         aria-labelledby="nav-message-tab">
